@@ -27,6 +27,8 @@ period_details = [detail.img['title'] for detail in forecast_div.select('.tombst
 df = pd.DataFrame({'Period': period_names, 'Description': period_desc, 'Details': period_details})
 
 print(df)
+
+
 # 2nd method >> Get individual lists < containers of needed info >
 # Loop through the containers
 # period_containers = forecast_div.select('.tombstone-container .period-name')
