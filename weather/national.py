@@ -26,31 +26,58 @@ period_details = [detail.img['title'] for detail in forecast_div.select('.tombst
 
 df = pd.DataFrame({'Period': period_names, 'Description': period_desc, 'Details': period_details})
 
-print(df)
+# print(df)
 
 
-# 2nd method >> Get individual lists < containers of needed info >
+# 2nd method >> Using bs4 find elements
+# >> Get individual lists < containers of needed info >
 # Loop through the containers
 # period_containers = forecast_div.select('.tombstone-container .period-name')
 
-# period_tags = []
-# for period in period_containers:
-#     name = period.get_text()
-#     period_tags.append(name)
+period_containers = forecast_div.find_all(class_='period-name')
+period_tags = []
+
+for period in period_containers:
+    name = period.get_text()
+    period_tags.append(name)
 
 # print(period_tags)
 # print(len(tombstone_containers))
 
+verdict_containers = forecast_div.findAll(class_='short-desc')
+verdicts = []
+
+for v in verdict_containers:
+    verdict = v.get_text()
+    verdicts.append(verdict)
 
 
+print(verdicts)
+
+period_descs = forecast_div.findAll(class_='tombstone-container')
+descs = []
+
+for period in period_descs:
+    d = period.img['title']
+    descs.append(d)
+
+# print(descs)
+
+# Write to a csv file
+file = 'file.csv'
+headers = 'Period, Verdict, Description\n' # CSV headers
+
+with open(file, 'a') as f:
+    f.write(headers)
+for period, verdict, desc in zip(period_tags, verdicts, descs): 
+    with open(file, 'a') as f:
+        f.write(period + ',' + verdict + ',' + desc)
 
 
+with open(file, 'r') as f:
+    content = f.read()
 
-
-
-
-
-
+print(content)
 
 
 
